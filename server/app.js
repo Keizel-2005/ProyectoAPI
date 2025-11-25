@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import tasksRoutes from './routes/tasksRoutes.js';  // .js para ESM
+import usersRoutes from './routes/usersRoutes.js';
+import participationsRoutes from './routes/participationsRoutes.js';
+import rankingRoutes from './routes/rankingRoutes.js';
+import challengesRoutes from './routes/challengesRoutes.js';
 import pool from './services/db.js';
 
 const app = express();
@@ -12,7 +15,10 @@ app.use(cors());
 app.use(express.json());
 
 // Montar rutas
-app.use('/api/tasks', tasksRoutes);  // /api/tasks si usas 'tasks'
+app.use('/api/users', usersRoutes);  // /api/tasks si usas 'tasks'
+app.use('/api/participaciones', participationsRoutes);
+app.use('/api/rankings', rankingRoutes);
+app.use('/api/retos', challengesRoutes);
 
 // Probar conexión
 (async () => {
