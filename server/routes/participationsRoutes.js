@@ -13,5 +13,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Obtener participaciones por ID
+router.get('/:id', async (req, res) => {
+  try {
+    const participations = await participationsServices.getById(req.params.id);
+    if (!participations) return res.status(404).json({ error: 'participacion no encontrado' });
+    res.json(participations);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al obtener participacion' });
+  }
+});
+
 
 export default router;
