@@ -5,20 +5,24 @@ import usersRoutes from './routes/usersRoutes.js';
 import participationsRoutes from './routes/participationsRoutes.js';
 import rankingRoutes from './routes/rankingRoutes.js';
 import challengesRoutes from './routes/challengesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { verifyToken } from './middlewares/authMiddleware.js';
 import pool from './services/db.js';
 
 const app = express();
 const PORT = 4000;
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
+// Rutas públicas
+app.use('/api/auth', authRoutes);
 
-// Montar rutas
-app.use('/api/users', usersRoutes);  // /api/tasks si usas 'tasks'
-app.use('/api/participaciones', participationsRoutes);
-app.use('/api/rankings', rankingRoutes);
-app.use('/api/retos', challengesRoutes);
+// rutas protegidas
+app.use('/api/users', verifyToken, usersRoutes); 
+app.use('/api/participaciones', verifyToken, participationsRoutes);
+app.use('/api/rankings', verifyToken, rankingRoutes);
+app.use('/api/retos', verifyToken, challengesRoutes);
 
 // Probar conexión
 (async () => {
