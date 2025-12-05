@@ -7,6 +7,7 @@ import rankingRoutes from './routes/rankingRoutes.js';
 import challengesRoutes from './routes/challengesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import { verifyToken } from './middlewares/authMiddleware.js';
+import { allowRoles } from './middlewares/roleMiddleware.js';
 import pool from './services/db.js';
 
 const app = express();
@@ -19,10 +20,10 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 // rutas protegidas
-app.use('/api/users', verifyToken, usersRoutes); 
-app.use('/api/participaciones', verifyToken, participationsRoutes);
-app.use('/api/rankings', verifyToken, rankingRoutes);
-app.use('/api/retos', verifyToken, challengesRoutes);
+app.use('/api/users', usersRoutes); 
+app.use('/api/participaciones',participationsRoutes);
+app.use('/api/rankings',  rankingRoutes);
+app.use('/api/retos',  challengesRoutes);
 
 // Probar conexión
 (async () => {
