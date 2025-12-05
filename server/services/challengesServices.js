@@ -16,3 +16,9 @@ export const create = async(challenge)=>{
   
 
 };
+
+export const deleteById = async (id) => {
+  const [result] = await pool.execute('DELETE FROM retos WHERE id = ?', [id]);
+  if (result.affectedRows === 0) throw new Error('User not found');
+  return { message: 'User deleted successfully'};
+};

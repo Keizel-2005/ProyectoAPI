@@ -33,3 +33,9 @@ export const validateCredentials = async (nombre, contrasena) => {
   delete user.contrasena;
   return user;
 };
+
+export const deleteById = async (id) => {
+  const [result] = await pool.execute('DELETE FROM usuarios WHERE id = ?', [id]);
+  if (result.affectedRows === 0) throw new Error('User not found');
+  return { message: 'User deleted successfully'};
+};

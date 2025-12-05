@@ -23,4 +23,10 @@ const {nombre, descripcion} = ranking;
   return newranking[0];
 };
 
+export const deleteById = async (id) => {
+  const [result] = await pool.execute('DELETE FROM ranking WHERE id = ?', [id]);
+  if (result.affectedRows === 0) throw new Error('User not found');
+  return { message: 'User deleted successfully'};
+};
+
 

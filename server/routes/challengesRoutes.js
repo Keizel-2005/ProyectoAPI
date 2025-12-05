@@ -23,5 +23,18 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const result = await challengesServices.deleteById(req.params.id);
+    res.json(result);
+  } catch (err) {
+    if (err.message === 'User not found') {
+      res.status(404).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Error al eliminar retos' });
+    }
+  }
+});
+
 
 export default router;
