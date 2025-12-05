@@ -6,7 +6,7 @@ export const login = async (nombre, contrasena) => {
   if (!user) throw new Error('Credenciales inválidas');
 
   const token = jwt.sign(
-    { id: user.id, nombre: user.nombre, role: user.role },
+    { id: user.id, nombre: user.nombre },
     process.env.JWT_SECRET,
     { expiresIn: Number(process.env.JWT_EXPIRES) }
   );

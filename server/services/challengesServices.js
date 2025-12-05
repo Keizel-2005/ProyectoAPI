@@ -10,9 +10,3 @@ export const getById = async(id)=>{
   return rows[0];
 
 }
-
-export const create = async(challenge)=>{
-  const {nombre,descripcion,nivel,punto} = challenge
-  
-
-};
