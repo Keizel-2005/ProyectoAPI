@@ -1,5 +1,6 @@
 import express from "express";
 import * as rankingServices from "../services/rankingServices.js";
+import { allowRoles } from "../middlewares/roleMiddleware.js";
 const router = express.Router();
 // Obtener todos los rankings
 router.get('/', async (req, res) => {
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/',allowRoles('admin'), async (req, res) => {
   try {
     const newranking = await rankingServices.create(req.body);
     res.status(201).json(newranking);
