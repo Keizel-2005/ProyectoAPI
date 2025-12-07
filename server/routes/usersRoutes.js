@@ -39,6 +39,19 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await usersServices.update(req.params.id, req.body);
+    res.json(updated);
+  } catch (err) {
+    if (err.message === 'User not found' || err.message === 'No hay datos para actualizar') {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Error al actualizar usuario' });
+    }
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   try {
     const result = await usersServices.deleteById(req.params.id);

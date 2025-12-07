@@ -23,6 +23,23 @@ const {nombre, descripcion} = ranking;
   return newranking[0];
 };
 
+export const update = async (id, ranking) => {
+  const { nombre, descripcion } = ranking;
+  const fields = [];
+  const values = [];
+  if (nombre !== undefined) { fields.push('nombre = ?'); values.push(nombre); }
+  if (descripcion !== undefined) { fields.push('descripcion = ?'); values.push(descripcion); }
+  if (fields.length === 0) throw new Error('No hay datos para actualizar');
+  values.push(id);
+  const [result] = await pool.execute(
+    `UPDATE ranking SET ${fields.join(', ')} WHERE id = ?`,
+    values
+  );
+  if (result.affectedRows === 0) throw new Error('Ranking not found');
+  return getById(id);
+}
+
+
 export const deleteById = async (id) => {
   const [result] = await pool.execute('DELETE FROM ranking WHERE id = ?', [id]);
   if (result.affectedRows === 0) throw new Error('User not found');
