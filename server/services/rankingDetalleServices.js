@@ -27,7 +27,7 @@ export const getByTop = async (top,ranking) => {
 export const create = async (rankingdetalle) => {
   let { ranking_id, usuario_id } = rankingdetalle;
   ranking_id = Number(ranking_id);
-  usuario_id = Number(usuario_id);
+  usuario_id = String(usuario_id).trim();
   if (!ranking_id || !usuario_id) {
     throw new Error('El participante del ranking tiene que indicar el id del ranking y su id');
   }
