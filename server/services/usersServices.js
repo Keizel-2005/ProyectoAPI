@@ -11,6 +11,12 @@ export const getById = async (id) => {
   return rows[0];
 };
 
+export const getByNombre = async (nombre) => {
+  const [rows] = await pool.execute('SELECT id, nombre, correo, role, edad,peso,altura FROM usuarios WHERE nombre = ?', [nombre]);
+  return rows[0];
+};
+
+
 export const create = async (user) => {
   const { id, nombre, correo, contrasena, role, edad,peso,altura} = user;
   if (!id || !nombre || !correo || !contrasena || !role || !edad || !peso || !altura)

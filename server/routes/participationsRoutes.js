@@ -1,5 +1,6 @@
 import express from "express";
 import * as participationsServices from "../services/participationsServices.js";
+import { allowRoles } from "../middlewares/roleMiddleware.js";
 const router = express.Router();
 
 // Obtener todas la participaciones
