@@ -1,3 +1,143 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     RankingDetalle:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           example: 1
+ *         ranking_id:
+ *           type: integer
+ *           example: 2
+ *         usuario_id:
+ *           type: string
+ *           example: "1234567890"
+ *         puntos_totales:
+ *           type: integer
+ *           example: 0
+ *         retos_cumplidos:
+ *           type: integer
+ *           example: 0
+ *         fecha_generado:
+ *           type: string
+ *           format: date-time
+ *           example: "2025-12-09T12:00:00Z"
+ */
+
+/**
+ * @swagger
+ * /api/rankingDetalles:
+ *   get:
+ *     summary: Obtener todos los detalles de ranking o por Top de un ranking
+ *     tags: [RankingDetalles]
+ *     parameters:
+ *       - in: query
+ *         name: top
+ *         schema:
+ *           type: string
+ *         description: Top a consultar (1,2,3)
+ *       - in: query
+ *         name: ranking
+ *         schema:
+ *           type: integer
+ *         description: ID del ranking
+ *     responses:
+ *       200:
+ *         description: Lista de ranking detalles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/RankingDetalle'
+ *       404:
+ *         description: Top no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+
+/**
+ * @swagger
+ * /api/rankingDetalles/{id}:
+ *   get:
+ *     summary: Obtener un detalle de ranking por ID
+ *     tags: [RankingDetalles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del detalle de ranking
+ *     responses:
+ *       200:
+ *         description: Ranking detalle encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RankingDetalle'
+ *       404:
+ *         description: Ranking detalle no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+
+/**
+ * @swagger
+ * /api/rankingDetalles:
+ *   post:
+ *     summary: Crear un nuevo detalle de ranking
+ *     tags: [RankingDetalles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ranking_id:
+ *                 type: integer
+ *                 example: 2
+ *               usuario_id:
+ *                 type: string
+ *                 example: "1234567890"
+ *     responses:
+ *       201:
+ *         description: Ranking detalle creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RankingDetalle'
+ *       400:
+ *         description: Datos faltantes o inválidos
+ *       500:
+ *         description: Error al crear ranking detalle
+ */
+
+/**
+ * @swagger
+ * /api/rankingDetalles/{id}:
+ *   delete:
+ *     summary: Eliminar un detalle de ranking por ID
+ *     tags: [RankingDetalles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del detalle de ranking
+ *     responses:
+ *       200:
+ *         description: Ranking detalle eliminado
+ *       404:
+ *         description: Ranking detalle no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+
 import express from "express";
 import * as rankingDetalleServices from "../services/rankingDetalleServices.js";
 
