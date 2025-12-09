@@ -39,13 +39,14 @@ export const getById = async (id) => {
 };
 
 export const update = async (id, data) => {
-  const { estado, fecha_completado, puntos_obtenidos } = data;
+  const { estado } = data;
   const fields = [];
   const values = [];
-  if (estado !== undefined) { fields.push('estado = ?'); values.push(estado); }
-  if (fecha_completado !== undefined) { fields.push('fecha_completado = ?'); values.push(fecha_completado); }
-  if (puntos_obtenidos !== undefined) { fields.push('puntos_obtenidos = ?'); values.push(puntos_obtenidos); }
-  if (fields.length === 0) throw new Error('No hay datos para actualizar');
+  if (estado !== undefined) { fields.push('estado = ?'); values.push(estado);
+  if (estado === 'completado') {  fields.push('fecha_completado = ?'); values.push(new Date());
+    }
+  } 
+  if (fields.length === 0) throw new Error('Solo se puede actualizar el estado');
   values.push(id);
   const [result] = await pool.execute(
     `UPDATE participaciones SET ${fields.join(', ')} WHERE id = ?`,
@@ -53,7 +54,7 @@ export const update = async (id, data) => {
   );
   if (result.affectedRows === 0) throw new Error('participation not found');
   return getById(id);
-}
+};
 
 
 export const deleteById = async (id) => {
