@@ -20,10 +20,10 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 // rutas protegidas
-app.use('/api/users',usersRoutes); 
+app.use('/api/users', allowRoles("admin"), usersRoutes); 
 app.use('/api/participaciones', verifyToken, participationsRoutes);
-app.use('/api/rankings',  rankingRoutes);
-app.use('/api/retos',  challengesRoutes);
+app.use('/api/rankings', verifyToken, rankingRoutes);
+app.use('/api/retos', verifyToken,challengesRoutes);
 
 // Probar conexión
 (async () => {

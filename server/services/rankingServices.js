@@ -12,7 +12,7 @@ export const getById = async (id) => {
 
 export const getByNombre = async (nombre) => {
   const [rows] = await pool.execute('SELECT * FROM ranking WHERE nombre = ?', [nombre]);
-  return rows[0];
+  return rows;
 };
 
 export const create = async(ranking)=>{
