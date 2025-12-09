@@ -17,20 +17,40 @@ export const getByNombre = async(nombre)=>{
 
 }
 
-export const create = async(challenge)=>{
-  const {nombre,descripcion,nivel,punto} = challenge
-  
+export const create = async (challenge) => {
+  const { nombre, descripcion, nivel, puntos } = challenge;
 
+  if (
+    !nombre || !nombre.trim() ||
+    !descripcion || !descripcion.trim() ||
+    !nivel ||
+    puntos === undefined
+  ) {
+    throw new Error('El reto no puede estar vacío');
+  }
+
+  const [result] = await pool.execute(
+    `INSERT INTO retos (nombre, descripcion, nivel, puntos)
+     VALUES (?, ?, ?, ?)`,
+    [nombre.trim(), descripcion.trim(), nivel, puntos]
+  );
+
+  const [nuevoReto] = await pool.execute(
+    'SELECT * FROM retos WHERE id = ?',
+    [result.insertId]
+  );
+
+  return nuevoReto[0];
 };
 
 export const update = async (id, data) => {
-  const { nombre, descripcion, nivel, punto } = data;
+  const { nombre, descripcion, nivel, puntos } = data;
   const fields = [];
   const values = [];
   if (nombre !== undefined) { fields.push('nombre = ?'); values.push(nombre); }
   if (descripcion !== undefined) { fields.push('descripcion = ?'); values.push(descripcion); } 
   if (nivel !== undefined) { fields.push('nivel = ?'); values.push(nivel); }
-  if (punto !== undefined) { fields.push('punto = ?'); values.push(punto); }
+  if (punto !== undefined) { fields.push('puntos = ?'); values.push(punto); }
   if (fields.length === 0) throw new Error('No hay datos para actualizar');
   values.push(id);
   const [result] = await pool.execute(

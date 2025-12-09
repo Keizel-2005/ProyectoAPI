@@ -56,6 +56,27 @@ export const update = async (id, data) => {
   return getById(id);
 };
 
+export const create = async (participacion) => {
+  const { usuario_id, reto_id } = participacion;
+
+  if (!usuario_id || !usuario_id.trim() || !reto_id) {
+    throw new Error('La participación no puede estar vacía');
+  }
+
+  const [result] = await pool.execute(
+    `INSERT INTO participaciones (usuario_id, reto_id)
+     VALUES (?, ?)`,
+    [usuario_id.trim(), reto_id]
+  );
+
+  const [newParticipacion] = await pool.execute(
+    'SELECT * FROM participaciones WHERE id = ?',
+    [result.insertId]
+  );
+
+  return newParticipacion[0];
+};
+
 
 export const deleteById = async (id) => {
   const [result] = await pool.execute('DELETE FROM participaciones WHERE id = ?', [id]);

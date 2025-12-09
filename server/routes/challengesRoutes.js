@@ -30,6 +30,47 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+export const create = async (challenge) => {
+  const { nombre, descripcion, nivel, puntos } = challenge;
+
+  if (
+    !nombre || !nombre.trim() ||
+    !descripcion || !descripcion.trim() ||
+    !nivel ||
+    puntos === undefined
+  ) {
+    throw new Error('El reto no puede estar vacío');
+  }
+
+  const [result] = await pool.execute(
+    `INSERT INTO retos (nombre, descripcion, nivel, puntos)
+     VALUES (?, ?, ?, ?)`,
+    [nombre.trim(), descripcion.trim(), nivel, puntos]
+  );
+
+  const [nuevoReto] = await pool.execute(
+    'SELECT * FROM retos WHERE id = ?',
+    [result.insertId]
+  );
+
+  return nuevoReto[0];
+};
+
+router.post('/', allowRoles('admin'), async (req, res) => {
+  try {
+    const nuevo = await challengesServices.create(req.body);
+    res.status(201).json(nuevo);
+  } catch (err) {
+    console.error(err);
+    if (err.message.includes('no puede estar vacío')) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Error al crear reto' });
+    }
+  }
+});
+
+
 router.put('/:id', allowRoles('admin'),async (req, res) => {
   try {
     const updated = await challengesServices.update(req.params.id, req.body);

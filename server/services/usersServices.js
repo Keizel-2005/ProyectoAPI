@@ -11,12 +11,6 @@ export const getById = async (id) => {
   return rows[0];
 };
 
-export const getByNombre = async (nombre) => {
-  const [rows] = await pool.execute('SELECT id, nombre, correo, role, edad,peso,altura FROM usuarios WHERE nombre = ?', [nombre]);
-  return rows[0];
-};
-
-
 export const create = async (user) => {
   const { id, nombre, correo, contrasena, role, edad,peso,altura} = user;
   if (!id || !nombre || !correo || !contrasena || !role || !edad || !peso || !altura)
@@ -27,7 +21,7 @@ export const create = async (user) => {
     'INSERT INTO usuarios (id, nombre, correo, contrasena, role, edad,peso,altura) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
     [id, nombre, correo, hashedPassword, role, edad,peso,altura]
   );
-  return getById(result.insertId);
+  return getById(id);
 };
 
 export const validateCredentials = async (nombre, contrasena) => {

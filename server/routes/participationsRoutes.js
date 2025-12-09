@@ -25,6 +25,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.post('/', allowRoles('user','admin'), async (req, res) => {
+  try {
+    const nueva = await participationsServices.create(req.body);
+    res.status(201).json(nueva);
+  } catch (err) {
+    if (err.message.includes('no puede estar vacía')) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Error al crear participación' });
+    }
+  }
+});
+
+
 router.put('/:id', allowRoles('admin'),async (req, res) => {
   try {
     const updated = await participationsServices.update(req.params.id, req.body);
