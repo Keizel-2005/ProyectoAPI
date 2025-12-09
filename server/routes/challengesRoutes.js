@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',allowRoles('admin'), async (req, res) => {
   try {
     const result = await challengesServices.deleteById(req.params.id);
     res.json(result);
