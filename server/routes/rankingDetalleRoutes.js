@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
     if (err.message.includes('el ranking detalle no puede estar vacío')) {
       res.status(400).json({ error: err.message });
     } else {
-      console.error('ERROR REAL:', err); // 👈 muestra el error completo
+      console.error('ERROR REAL:', err); 
   res.status(500).json({ error: err.message || 'Error al agregar ranking detalle' });
     }
   }
