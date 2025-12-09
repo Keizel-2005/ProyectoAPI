@@ -33,7 +33,7 @@ const {ranking_id, usuario_id} = rankingdetalle;
     'INSERT INTO ranking_detalle (ranking_id, usuario_id, puntos_totales, retos_cumplidos ) VALUES (?,?,0,0)',
     [ranking_id.trim(),usuario_id.trim()]
   );
-  const [newranking] = await pool.execute('SELECT * FROM ranking WHERE id = ?', [result.insertId]);
+  const [newranking] = await pool.execute('SELECT * FROM ranking_detalle WHERE id = ?', [result.insertId]);
   return newranking[0];
 };
 
