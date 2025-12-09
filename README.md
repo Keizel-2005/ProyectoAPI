@@ -64,8 +64,9 @@ npm install bcrypt jsonwebtoken express-validator
 npm run dev
 
 Roles
-- Administrador: Tiene acceso a todos los endpoints 
-- Usuarios: Tienen acceso a los retos, participaciones, rankings 
+- Administrador: Es el usuario con el nivel más alto de permisos dentro del sistema, su función principal es
+gestionar y supervisar toda la plataforma, por lo que tiene accesos sin restricciones.
+- Usuarios: Son los participantes regulares del sistema, quienes interactúan con los retos y acumulan puntos según sus actividades. Su acceso está enfocado únicamente en las funciones necesarias para participar dentro de la plataforma.
 
 Integrantes 
 -Erik Daniel Warnke Vargas
