@@ -1,5 +1,6 @@
 import express from "express";
 import * as participationsServices from "../services/participationsServices.js";
+import { allowRoles } from "../middlewares/roleMiddleware.js";
 const router = express.Router();
 
 // Obtener todas la participaciones
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', allowRoles('admin'),async (req, res) => {
   try {
     const result = await participationsServices.deleteById(req.params.id);
     res.json(result);

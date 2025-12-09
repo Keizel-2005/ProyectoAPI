@@ -1,10 +1,17 @@
 import express from "express";
 import * as challengesServices from "../services/challengesServices.js";
+import { allowRoles } from "../middlewares/roleMiddleware.js";
 const router = express.Router();
 
 // Obtener todas la retos
 router.get('/', async (req, res) => {
   try {
+    const { nombre } = req.query;
+    if (nombre) {
+      const retos = await challengesServices.getByNombre(nombre);
+      if (!retos) return res.status(404).json({ error: 'Retos no encontrado' });
+      return res.json(retos);
+    }
     const reto = await challengesServices.getAllchallenges();
     res.json(reto);
   } catch (err) {
@@ -23,7 +30,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',allowRoles('admin'), async (req, res) => {
   try {
     const result = await challengesServices.deleteById(req.params.id);
     res.json(result);

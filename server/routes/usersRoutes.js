@@ -5,11 +5,17 @@ const router = express.Router();
 // Obtener todos los usuarios
 router.get('/', async (req, res) => {
   try {
-    const users = await usersServices.getAllusers();
-    res.json(users);
+    const { nombre } = req.query;
+    if (nombre) {
+      const users = await usersServices.getByNombre(nombre);
+      if (!users) return res.status(404).json({ error: 'Usuario no encontrado' });
+      return res.json(users);
+    }
+    const user = await usersServices.getAllusers();
+    res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al obtener usuarios' });
+    res.status(500).json({ error: 'Error al obtener los usuarios' });
   }
 });
 

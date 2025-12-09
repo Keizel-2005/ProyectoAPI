@@ -1,15 +1,22 @@
 import express from "express";
 import * as rankingServices from "../services/rankingServices.js";
 import { allowRoles } from "../middlewares/roleMiddleware.js";
+
 const router = express.Router();
 // Obtener todos los rankings
 router.get('/', async (req, res) => {
   try {
-    const participations = await rankingServices.getAllRankings();
-    res.json(participations);
+    const { nombre } = req.query;
+    if (nombre) {
+      const rankings = await rankingServices.getByNombre(nombre);
+      if (!rankings) return res.status(404).json({ error: 'Ranking no encontrado' });
+      return res.json(rankings);
+    }
+    const ranking = await rankingServices.getAllRankings();
+    res.json(ranking);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al obtener los rankings' });
+    res.status(500).json({ error: 'Error al obtener los ranking' });
   }
 });
 
@@ -38,7 +45,7 @@ router.post('/',allowRoles('admin'), async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',allowRoles('admin'), async (req, res) => {
   try {
     const updated = await rankingServices.update(req.params.id, req.body);
     res.json(updated);
@@ -51,7 +58,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',allowRoles('admin'),async (req, res) => {
   try {
     const result = await rankingServices.deleteById(req.params.id);
     res.json(result);
