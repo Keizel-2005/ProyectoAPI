@@ -38,6 +38,24 @@ export const getById = async (id) => {
   return rows [0];
 };
 
+export const update = async (id, data) => {
+  const { estado, fecha_completado, puntos_obtenidos } = data;
+  const fields = [];
+  const values = [];
+  if (estado !== undefined) { fields.push('estado = ?'); values.push(estado); }
+  if (fecha_completado !== undefined) { fields.push('fecha_completado = ?'); values.push(fecha_completado); }
+  if (puntos_obtenidos !== undefined) { fields.push('puntos_obtenidos = ?'); values.push(puntos_obtenidos); }
+  if (fields.length === 0) throw new Error('No hay datos para actualizar');
+  values.push(id);
+  const [result] = await pool.execute(
+    `UPDATE participaciones SET ${fields.join(', ')} WHERE id = ?`,
+    values
+  );
+  if (result.affectedRows === 0) throw new Error('participation not found');
+  return getById(id);
+}
+
+
 export const deleteById = async (id) => {
   const [result] = await pool.execute('DELETE FROM participaciones WHERE id = ?', [id]);
   if (result.affectedRows === 0) throw new Error('User not found');

@@ -25,6 +25,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', allowRoles('admin'),async (req, res) => {
+  try {
+    const updated = await participationsServices.update(req.params.id, req.body);
+    res.json(updated);
+  } catch (err) {
+    if (err.message === 'participation not found' || err.message === 'No hay datos para actualizar') {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Error al actualizar participacion' });
+    }
+  }
+});
+
 
 router.delete('/:id', allowRoles('admin'),async (req, res) => {
   try {
