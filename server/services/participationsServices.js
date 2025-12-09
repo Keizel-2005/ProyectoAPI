@@ -1,9 +1,22 @@
 import pool from "./db.js";
 
 export const getAllparticipations = async () => {
-    const [rows] = await pool.execute('SELECT * FROM participaciones ORDER BY id DESC');
+    const [rows] = await pool.execute(`SELECT 
+       p.id,
+       p.usuario_id,
+       u.nombre AS usuario_nombre,
+       p.reto_id,
+       r.nombre AS reto_nombre,
+       p.estado,
+       p.fecha_union,
+       p.fecha_completado,
+       p.puntos_obtenidos
+     FROM participaciones p
+     INNER JOIN usuarios u ON p.usuario_id = u.id
+     INNER JOIN retos r ON p.reto_id = r.id ORDER BY id DESC`);
   return rows;
 };
+
 
 
 export const getById = async (id) => {
