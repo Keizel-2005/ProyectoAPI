@@ -50,7 +50,7 @@ export const update = async (id, data) => {
   if (nombre !== undefined) { fields.push('nombre = ?'); values.push(nombre); }
   if (descripcion !== undefined) { fields.push('descripcion = ?'); values.push(descripcion); } 
   if (nivel !== undefined) { fields.push('nivel = ?'); values.push(nivel); }
-  if (punto !== undefined) { fields.push('puntos = ?'); values.push(punto); }
+  if (puntos !== undefined) { fields.push('puntos = ?'); values.push(puntos); }
   if (fields.length === 0) throw new Error('No hay datos para actualizar');
   values.push(id);
   const [result] = await pool.execute(
