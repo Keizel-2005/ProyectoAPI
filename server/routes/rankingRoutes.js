@@ -6,11 +6,17 @@ const router = express.Router();
 // Obtener todos los rankings
 router.get('/', async (req, res) => {
   try {
-    const participations = await rankingServices.getAllRankings();
-    res.json(participations);
+    const { nombre } = req.query;
+    if (nombre) {
+      const rankings = await rankingServices.getByNombre(nombre);
+      if (!rankings) return res.status(404).json({ error: 'Ranking no encontrado' });
+      return res.json(rankings);
+    }
+    const ranking = await rankingServices.getAllRankings();
+    res.json(ranking);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al obtener los rankings' });
+    res.status(500).json({ error: 'Error al obtener los ranking' });
   }
 });
 

@@ -10,6 +10,11 @@ export const getById = async (id) => {
   return rows[0];
 };
 
+export const getByNombre = async (nombre) => {
+  const [rows] = await pool.execute('SELECT * FROM ranking WHERE nombre = ?', [nombre]);
+  return rows[0];
+};
+
 export const create = async(ranking)=>{
 const {nombre, descripcion} = ranking;
  if (!nombre || !nombre.trim()|| !descripcion|| !descripcion.trim()) {
