@@ -1,6 +1,5 @@
 import express from "express";
 import * as rankingDetalleServices from "../services/rankingDetalleServices.js";
-import { allowRoles } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 // Obtener todos los rankings detalle
@@ -31,42 +30,30 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/',allowRoles('admin'), async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const newranking = await rankingServices.create(req.body);
+    const newranking = await rankingDetalleServices.create(req.body);
     res.status(201).json(newranking);
   } catch (err) {
-    if (err.message.includes('el ranking no puede estar vacío')) {
+    if (err.message.includes('el ranking detalle no puede estar vacío')) {
       res.status(400).json({ error: err.message });
     } else {
       console.error('Error al insertar:', err);
-      res.status(500).json({ error: 'Error al agregar ranking' });
+      res.status(500).json({ error: 'Error al agregar ranking detalle' });
     }
   }
 });
 
-router.put('/:id',allowRoles('admin'), async (req, res) => {
-  try {
-    const updated = await rankingServices.update(req.params.id, req.body);
-    res.json(updated);
-  } catch (err) {
-    if (err.message === 'Ranking not found' || err.message === 'No hay datos para actualizar') {
-      res.status(400).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Error al actualizar ranking' });
-    }
-  }
-});
 
-router.delete('/:id',allowRoles('admin'),async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const result = await rankingServices.deleteById(req.params.id);
+    const result = await rankingDetalleServices.deleteById(req.params.id);
     res.json(result);
   } catch (err) {
-    if (err.message === 'User not found') {
+    if (err.message === 'ranking detalle not found') {
       res.status(404).json({ error: err.message });
     } else {
-      res.status(500).json({ error: 'Error al eliminar ranking' });
+      res.status(500).json({ error: 'Error al eliminar ranking detalle' });
     }
   }
 });

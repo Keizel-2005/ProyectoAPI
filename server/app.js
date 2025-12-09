@@ -6,6 +6,7 @@ import participationsRoutes from './routes/participationsRoutes.js';
 import rankingRoutes from './routes/rankingRoutes.js';
 import challengesRoutes from './routes/challengesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import rankingDetalleRoutes from './routes/rankingDetalleRoutes.js';
 import { verifyToken } from './middlewares/authMiddleware.js';
 import { allowRoles } from './middlewares/roleMiddleware.js';
 import pool from './services/db.js';
@@ -24,6 +25,7 @@ app.use('/api/users', allowRoles("admin"), usersRoutes);
 app.use('/api/participaciones', verifyToken, participationsRoutes);
 app.use('/api/rankings', verifyToken, rankingRoutes);
 app.use('/api/retos', verifyToken,challengesRoutes);
+app.use('/api/rankingDetalles', verifyToken,rankingDetalleRoutes);
 
 // Probar conexión
 (async () => {
