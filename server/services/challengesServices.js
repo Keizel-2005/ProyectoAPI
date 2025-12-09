@@ -11,6 +11,12 @@ export const getById = async(id)=>{
 
 }
 
+export const getByNombre = async(nombre)=>{
+  const [rows] = await pool.execute('SELECT * FROM retos WHERE nombre = ?', [nombre]);
+  return rows[0];
+
+}
+
 export const create = async(challenge)=>{
   const {nombre,descripcion,nivel,punto} = challenge
   
