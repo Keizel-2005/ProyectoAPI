@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
   try {
      const { top,ranking } = req.query;
     if (top && ranking) {
-          const rankingsdetalle = await rankingServices.getByTop(top,ranking);
+          const rankingsdetalle = await rankingDetalleServices.getByTop(top,ranking);
           if (!rankingsdetalle) return res.status(404).json({ error: 'Ese Top no se ha encontrado' });
           return res.json(rankingsdetalle);
         }
