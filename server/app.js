@@ -21,7 +21,7 @@ app.use('/api/auth', authRoutes);
 
 // rutas protegidas
 app.use('/api/users', allowRoles("admin"), usersRoutes); 
-app.use('/api/participaciones', participationsRoutes);
+app.use('/api/participaciones', verifyToken, participationsRoutes);
 app.use('/api/rankings', verifyToken, rankingRoutes);
 app.use('/api/retos', verifyToken,challengesRoutes);
 
